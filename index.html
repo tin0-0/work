@@ -858,6 +858,75 @@
     text-transform: uppercase;
     display: none;
   }
+
+
+  /* ── ENGINE HERO ── */
+  .hero-engine-wrap {
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 580px;
+    height: 580px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero-engine-glow {
+    position: absolute;
+    inset: -60px;
+    background: radial-gradient(ellipse at center,
+      rgba(245,197,0,0.18) 0%,
+      rgba(245,197,0,0.06) 40%,
+      transparent 70%);
+    border-radius: 50%;
+    animation: engineGlow 3s ease-in-out infinite alternate;
+  }
+
+  .hero-engine-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(-10px 20px 40px rgba(0,0,0,0.8))
+            drop-shadow(0px 0px 30px rgba(245,197,0,0.15));
+    animation: engineFloat 4s ease-in-out infinite,
+               enginePulse 0.15s ease-in-out infinite;
+    transform-origin: center bottom;
+  }
+
+  @keyframes engineFloat {
+    0%, 100% { transform: translateY(0px) rotate(-2deg); }
+    50%       { transform: translateY(-18px) rotate(-2deg); }
+  }
+
+  @keyframes enginePulse {
+    0%, 100% { filter: drop-shadow(-10px 20px 40px rgba(0,0,0,0.8))
+                       drop-shadow(0 0 30px rgba(245,197,0,0.15))
+                       brightness(1); }
+    50%       { filter: drop-shadow(-10px 20px 40px rgba(0,0,0,0.8))
+                       drop-shadow(0 0 40px rgba(245,197,0,0.25))
+                       brightness(1.04); }
+  }
+
+  @keyframes engineGlow {
+    from { opacity: 0.6; transform: scale(0.95); }
+    to   { opacity: 1;   transform: scale(1.05); }
+  }
+
+  /* Scroll: engine moves up as user scrolls */
+  .hero-engine-wrap.scrolled {
+    transition: transform 0.1s linear;
+  }
+
+  @media (max-width: 900px) {
+    .hero-engine-wrap {
+      width: 300px;
+      height: 300px;
+      right: -60px;
+      opacity: 0.35;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -871,6 +940,8 @@
     <li><a href="#offers">Offers</a></li>
     <li><a href="#products">Price List</a></li>
     <li><a href="#gallery">Gallery</a></li>
+    <li><a href="faq.html">FAQs</a></li>
+    <li><a href="testimonials.html">Testimonials</a></li>
     <li><a href="#contact" class="nav-cta">Contact Us</a></li>
   </ul>
   <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
@@ -882,7 +953,7 @@
 <section id="home">
   <div class="hero-bg"></div>
   <div class="hero-accent"></div>
-  <div class="hero-content container">
+<div class="hero-content container">
     <div class="hero-tag">🇿🇼 Dubai → Zimbabwe • Direct Supply</div>
     <h1 class="hero-title">
       DRIVE<br>
@@ -1450,5 +1521,45 @@ Sent from bkautospares.com`;
   }
 
 </script>
+
+
+<script>
+  // ── ENGINE SCROLL PARALLAX ──
+  const engineWrap = document.getElementById('heroEngine');
+  const engineImg = document.getElementById('engineImg');
+  const hero = document.getElementById('home');
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const heroH = hero.offsetHeight;
+
+    if (scrollY < heroH) {
+      // Parallax — moves up faster than scroll + slight rotation
+      const moveY = scrollY * 0.35;
+      const rotate = -2 + scrollY * 0.015;
+      const scale = 1 - scrollY * 0.0002;
+
+      engineWrap.style.transform = 
+        `translateY(calc(-50% - ${moveY}px))`;
+      engineImg.style.transform = 
+        `rotate(${rotate}deg) scale(${Math.max(scale, 0.85)})`;
+    }
+  }, { passive: true });
+
+  // ── MOUSE PARALLAX on hero ──
+  hero.addEventListener('mousemove', e => {
+    const rect = hero.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    engineWrap.style.transform = 
+      `translateY(calc(-50% + ${y * -20}px)) translateX(${x * 15}px)`;
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    engineWrap.style.transform = 'translateY(-50%)';
+  });
+</script>
+
 </body>
 </html>
