@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testimonials — BK Autospares</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  :root {
+    --yellow: #F5C500;
+    --yellow-dark: #D4A900;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --dark2: #1A1A1A;
+    --dark3: #222222;
+    --white: #F5F5F0;
+    --gray: #888888;
+    --gray-light: #CCCCCC;
+  }
+  body { font-family: 'Barlow', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 70px; background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); border-bottom: 2px solid var(--yellow); }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--yellow); text-decoration: none; }
+  .nav-logo span { color: var(--white); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-light); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--yellow); }
+  .nav-cta { background: var(--yellow); color: var(--black) !important; padding: 8px 20px; font-weight: 900 !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+  .hamburger span { display: block; width: 25px; height: 2px; background: var(--yellow); }
+
+  /* PAGE HEADER */
+  .page-header { padding-top: 70px; background: var(--dark); border-bottom: 2px solid var(--yellow); text-align: center; padding-bottom: 60px; position: relative; overflow: hidden; }
+  .page-header::before { content: '"'; font-family: 'Bebas Neue', sans-serif; font-size: 500px; color: rgba(245,197,0,0.03); position: absolute; top: -120px; left: 50%; transform: translateX(-50%); pointer-events: none; line-height: 1; }
+  .breadcrumb { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); margin: 32px 0 16px; }
+  .breadcrumb a { color: var(--yellow); text-decoration: none; }
+  .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 8vw, 96px); letter-spacing: 4px; color: var(--white); margin-bottom: 16px; }
+  .page-header h1 span { color: var(--yellow); }
+  .page-header p { font-size: 16px; color: var(--gray); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+  /* COMING SOON */
+  .coming-soon { padding: 80px 40px; text-align: center; background: var(--black); }
+  .cs-icon { width: 100px; height: 100px; background: var(--dark2); border: 2px solid var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 42px; margin: 0 auto 32px; }
+  .cs-tag { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--yellow); margin-bottom: 14px; }
+  .cs-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 5vw, 56px); letter-spacing: 3px; color: var(--white); margin-bottom: 16px; }
+  .cs-body { font-size: 16px; color: var(--gray); line-height: 1.8; max-width: 560px; margin: 0 auto 48px; }
+
+  /* PLACEHOLDER CARDS */
+  .placeholder-section { padding: 0 40px 80px; background: var(--black); }
+  .placeholder-label { text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); margin-bottom: 32px; font-style: italic; }
+  .placeholder-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1100px; margin: 0 auto; }
+
+  .placeholder-card { background: var(--dark2); border: 1px solid var(--dark3); padding: 32px 28px; position: relative; overflow: hidden; opacity: 0.45; filter: blur(1.5px); }
+  .placeholder-card::before { content: '"'; font-family: 'Bebas Neue', sans-serif; font-size: 80px; color: var(--yellow); opacity: 0.2; position: absolute; top: 8px; left: 20px; line-height: 1; }
+
+  .placeholder-stars { display: flex; gap: 4px; margin-bottom: 20px; margin-top: 28px; }
+  .star { color: var(--yellow); font-size: 16px; }
+  .placeholder-line { height: 10px; background: var(--dark3); border-radius: 4px; margin-bottom: 8px; }
+  .placeholder-line.short { width: 70%; }
+  .placeholder-line.shorter { width: 45%; }
+  .placeholder-divider { height: 1px; background: var(--dark3); margin: 20px 0; }
+  .placeholder-person { display: flex; align-items: center; gap: 12px; }
+  .placeholder-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--dark3); flex-shrink: 0; }
+  .placeholder-name { height: 10px; background: var(--dark3); border-radius: 4px; width: 110px; margin-bottom: 6px; }
+  .placeholder-role { height: 8px; background: var(--dark3); border-radius: 4px; width: 70px; }
+
+  /* SUBMIT REVIEW CTA */
+  .review-cta { background: var(--dark); border-top: 2px solid var(--yellow); border-bottom: 2px solid var(--yellow); padding: 60px 40px; text-align: center; }
+  .review-cta h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 56px); letter-spacing: 3px; color: var(--white); margin-bottom: 12px; }
+  .review-cta h2 span { color: var(--yellow); }
+  .review-cta p { font-size: 16px; color: var(--gray); max-width: 480px; margin: 0 auto 32px; line-height: 1.7; }
+  .btn-primary { background: var(--yellow); color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 16px 36px; text-decoration: none; display: inline-block; transition: background 0.2s, transform 0.2s; margin: 6px; border: none; cursor: pointer; }
+  .btn-primary:hover { background: var(--yellow-dark); transform: translateY(-2px); }
+  .btn-outline { border: 2px solid var(--yellow); color: var(--yellow); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 14px 36px; text-decoration: none; display: inline-block; transition: all 0.2s; margin: 6px; }
+  .btn-outline:hover { background: var(--yellow); color: var(--black); }
+
+  /* FOOTER */
+  footer { background: var(--dark2); border-top: 2px solid var(--yellow); padding: 40px; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; color: var(--yellow); }
+  .footer-logo span { color: var(--white); }
+  .footer-copy { font-size: 13px; color: var(--gray); }
+  .footer-links { display: flex; gap: 24px; list-style: none; }
+  .footer-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--yellow); }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; flex-direction: column; position: fixed; top: 70px; left: 0; right: 0; background: var(--dark); padding: 20px; border-bottom: 2px solid var(--yellow); gap: 16px; z-index: 99; }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    .coming-soon, .placeholder-section, .review-cta { padding-left: 20px; padding-right: 20px; }
+    .placeholder-grid { grid-template-columns: 1fr; }
+    footer { padding: 24px 20px; }
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">BK<span>AUTO</span>SPARES</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#offers">Offers</a></li>
+    <li><a href="index.html#products">Price List</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="faq.html">FAQs</a></li>
+    <li><a href="testimonials.html" class="active">Testimonials</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Contact Us</a></li>
+  </ul>
+  <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb"><a href="index.html">Home</a> → Testimonials</div>
+  <h1>WHAT OUR <span>CLIENTS SAY</span></h1>
+  <p>Real feedback from workshops, distributors and car owners who trust BK Autospares for their spare parts needs.</p>
+</div>
+
+<section class="coming-soon">
+  <div class="cs-icon">⭐</div>
+  <div class="cs-tag">Coming Soon</div>
+  <h2 class="cs-title">TESTIMONIALS ON THE WAY</h2>
+  <p class="cs-body">We're gathering feedback from our valued clients across Zimbabwe and beyond. Check back soon — real stories from real customers are coming.</p>
+</section>
+
+<div class="placeholder-section">
+  <p class="placeholder-label">A preview of what's coming...</p>
+  <div class="placeholder-grid">
+    <div class="placeholder-card">
+      <div class="placeholder-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <div class="placeholder-line"></div>
+      <div class="placeholder-line short"></div>
+      <div class="placeholder-line"></div>
+      <div class="placeholder-line shorter"></div>
+      <div class="placeholder-divider"></div>
+      <div class="placeholder-person"><div class="placeholder-avatar"></div><div><div class="placeholder-name"></div><div class="placeholder-role"></div></div></div>
+    </div>
+    <div class="placeholder-card">
+      <div class="placeholder-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <div class="placeholder-line shorter"></div>
+      <div class="placeholder-line"></div>
+      <div class="placeholder-line short"></div>
+      <div class="placeholder-line"></div>
+      <div class="placeholder-divider"></div>
+      <div class="placeholder-person"><div class="placeholder-avatar"></div><div><div class="placeholder-name"></div><div class="placeholder-role"></div></div></div>
+    </div>
+    <div class="placeholder-card">
+      <div class="placeholder-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <div class="placeholder-line"></div>
+      <div class="placeholder-line shorter"></div>
+      <div class="placeholder-line"></div>
+      <div class="placeholder-line short"></div>
+      <div class="placeholder-divider"></div>
+      <div class="placeholder-person"><div class="placeholder-avatar"></div><div><div class="placeholder-name"></div><div class="placeholder-role"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="review-cta">
+  <h2>ORDERED FROM <span>US BEFORE?</span></h2>
+  <p>We'd love to hear about your experience. Share your feedback and help other customers make informed decisions.</p>
+  <a href="mailto:bkautospares124@gmail.com?subject=Testimonial%20—%20BK%20Autospares&body=Hi%20BK%20Autospares%2C%20I%20would%20like%20to%20share%20my%20experience..." class="btn-primary">📧 Share Your Experience</a>
+  <a href="https://wa.me/971525075778?text=Hi%20BK%20Autospares%2C%20I%27d%20like%20to%20share%20a%20testimonial%20about%20my%20experience." target="_blank" class="btn-outline">💬 WhatsApp</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">BK<span>AUTO</span>SPARES</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#products">Price List</a></li>
+      <li><a href="faq.html">FAQs</a></li>
+      <li><a href="testimonials.html">Testimonials</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 BK Autospares. All Rights Reserved.</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('navLinks').addEventListener('click', e => {
+    if (e.target.tagName === 'A') document.getElementById('navLinks').classList.remove('open');
+  });
+</script>
+</body>
+</html>

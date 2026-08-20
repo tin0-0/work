@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQs — BK Autospares</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  :root {
+    --yellow: #F5C500;
+    --yellow-dark: #D4A900;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --dark2: #1A1A1A;
+    --dark3: #222222;
+    --white: #F5F5F0;
+    --gray: #888888;
+    --gray-light: #CCCCCC;
+  }
+  body { font-family: 'Barlow', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 70px;
+    background: rgba(10,10,10,0.95); backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--yellow);
+  }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--yellow); text-decoration: none; }
+  .nav-logo span { color: var(--white); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-light); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--yellow); }
+  .nav-cta { background: var(--yellow); color: var(--black) !important; padding: 8px 20px; font-weight: 900 !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+  .hamburger span { display: block; width: 25px; height: 2px; background: var(--yellow); }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding-top: 70px;
+    background: var(--dark);
+    border-bottom: 2px solid var(--yellow);
+    text-align: center;
+    padding-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '?';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 400px;
+    color: rgba(245,197,0,0.03);
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    line-height: 1;
+  }
+  .breadcrumb { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); margin: 32px 0 16px; }
+  .breadcrumb a { color: var(--yellow); text-decoration: none; }
+  .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 8vw, 96px); letter-spacing: 4px; color: var(--white); margin-bottom: 16px; }
+  .page-header h1 span { color: var(--yellow); }
+  .page-header p { font-size: 16px; color: var(--gray); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+  /* FAQ SECTION */
+  .faq-section { padding: 80px 40px; max-width: 900px; margin: 0 auto; }
+
+  .faq-category { margin-bottom: 60px; }
+  .faq-category-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--yellow);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--dark3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .faq-category-title::before { content: ''; display: block; width: 4px; height: 28px; background: var(--yellow); }
+
+  .faq-item {
+    border: 1px solid var(--dark3);
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .faq-item:hover { border-color: rgba(245,197,0,0.3); }
+  .faq-item.open { border-color: var(--yellow); }
+
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    cursor: pointer;
+    background: var(--dark2);
+    transition: background 0.2s;
+    gap: 16px;
+  }
+  .faq-question:hover { background: var(--dark3); }
+  .faq-item.open .faq-question { background: var(--dark3); }
+
+  .faq-q-text { font-size: 15px; font-weight: 600; color: var(--white); line-height: 1.4; }
+  .faq-item.open .faq-q-text { color: var(--yellow); }
+
+  .faq-icon {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--yellow);
+    flex-shrink: 0;
+    transition: transform 0.3s;
+    width: 28px;
+    text-align: center;
+  }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    padding: 0 24px;
+    background: var(--dark);
+  }
+  .faq-item.open .faq-answer { max-height: 400px; padding: 20px 24px; }
+  .faq-answer p { font-size: 15px; color: var(--gray-light); line-height: 1.8; }
+  .faq-answer ul { margin-top: 10px; padding-left: 20px; }
+  .faq-answer ul li { font-size: 14px; color: var(--gray-light); line-height: 1.8; margin-bottom: 4px; }
+  .faq-answer strong { color: var(--yellow); }
+
+  /* CTA SECTION */
+  .faq-cta {
+    background: var(--dark);
+    border-top: 2px solid var(--yellow);
+    border-bottom: 2px solid var(--yellow);
+    padding: 60px 40px;
+    text-align: center;
+    margin-bottom: 0;
+  }
+  .faq-cta h2 { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 3px; color: var(--white); margin-bottom: 12px; }
+  .faq-cta h2 span { color: var(--yellow); }
+  .faq-cta p { font-size: 16px; color: var(--gray); margin-bottom: 32px; }
+  .btn-primary { background: var(--yellow); color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 16px 36px; text-decoration: none; display: inline-block; transition: background 0.2s, transform 0.2s; border: none; cursor: pointer; margin: 6px; }
+  .btn-primary:hover { background: var(--yellow-dark); transform: translateY(-2px); }
+  .btn-outline { border: 2px solid var(--yellow); color: var(--yellow); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 14px 36px; text-decoration: none; display: inline-block; transition: all 0.2s; margin: 6px; }
+  .btn-outline:hover { background: var(--yellow); color: var(--black); }
+
+  /* FOOTER */
+  footer { background: var(--dark2); border-top: 2px solid var(--yellow); padding: 40px; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; color: var(--yellow); }
+  .footer-logo span { color: var(--white); }
+  .footer-copy { font-size: 13px; color: var(--gray); }
+  .footer-links { display: flex; gap: 24px; list-style: none; }
+  .footer-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--yellow); }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; flex-direction: column; position: fixed; top: 70px; left: 0; right: 0; background: var(--dark); padding: 20px; border-bottom: 2px solid var(--yellow); gap: 16px; z-index: 99; }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    .faq-section { padding: 60px 20px; }
+    .faq-cta { padding: 48px 20px; }
+    footer { padding: 24px 20px; }
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">BK<span>AUTO</span>SPARES</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#offers">Offers</a></li>
+    <li><a href="index.html#products">Price List</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="faq.html" class="active">FAQs</a></li>
+    <li><a href="testimonials.html">Testimonials</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Contact Us</a></li>
+  </ul>
+  <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb"><a href="index.html">Home</a> → FAQs</div>
+  <h1>FREQUENTLY ASKED <span>QUESTIONS</span></h1>
+  <p>Everything you need to know about ordering spare parts from BK Autospares — from placing an order to delivery in Harare.</p>
+</div>
+
+<div class="faq-section">
+
+  <!-- ORDERING -->
+  <div class="faq-category">
+    <div class="faq-category-title">Ordering & Pricing</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">How do I place an order?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>You can place an order by contacting us directly via <strong>WhatsApp</strong> or <strong>Email</strong>. Simply tell us the part you need, your car model, and engine code. We'll confirm availability and pricing within 24 hours.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Are the prices on the website final?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>Prices listed on our price list are <strong>landed prices in Harare, Zimbabwe</strong> — meaning shipping and clearance are already included. Prices are subject to change based on exchange rates. Contact us to confirm the latest price before ordering.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What currency do you accept?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>We quote and accept payment in <strong>USD (United States Dollars)</strong>. All prices on our site are in USD.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Do you offer a discount for bulk orders?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>Yes — if you're ordering multiple parts or are a workshop/distributor placing regular orders, contact us to discuss <strong>wholesale pricing</strong>. We work with workshops and resellers across Zimbabwe.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Can I request a part that's not on the price list?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>Absolutely. Our price list only shows current available stock. If you need a specific part not listed, <strong>contact us with your car model and part details</strong> and we'll source it for you from our Dubai network.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHIPPING -->
+  <div class="faq-category">
+    <div class="faq-category-title">Shipping & Delivery</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">How long does delivery take?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>Our standard lead time is <strong>30 to 35 days</strong> from order confirmation to landing in Harare, Zimbabwe. This includes sourcing from Dubai, shipping, and ZIMRA clearance.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Where do you deliver to?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>Our primary delivery destination is <strong>Harare, Zimbabwe</strong>. All listed prices are landed in Harare. If you need delivery to another city in Zimbabwe, contact us and we can arrange onward transport at additional cost.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Is shipping and ZIMRA clearance included in the price?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p><strong>Yes.</strong> All prices on our site are fully landed prices — they include:</p>
+        <ul>
+          <li>Sourcing from Dubai</li>
+          <li>International shipping</li>
+          <li>ZIMRA customs clearance</li>
+          <li>Delivery to Harare</li>
+        </ul>
+        <p>There are no hidden fees.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Can I track my order?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>Yes — once your order is shipped, we'll provide you with tracking information via WhatsApp. We keep you updated throughout the process from sourcing to clearance.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTS & QUALITY -->
+  <div class="faq-category">
+    <div class="faq-category-title">Parts & Quality</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Are the parts genuine or aftermarket?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>We supply both <strong>genuine OEM parts</strong> and <strong>quality aftermarket alternatives</strong> depending on availability and your budget. We'll always specify which type of part you're getting before you confirm your order.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What car brands do you cover?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>We source parts for a wide range of makes including:</p>
+        <ul>
+          <li>Toyota, Nissan, Honda, Isuzu</li>
+          <li>BMW, Mercedes-Benz, Volkswagen</li>
+          <li>Jeep, Land Rover, Mazda</li>
+        </ul>
+        <p>If your car brand isn't listed, contact us — we can usually source it through our Dubai network.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What types of parts do you supply?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>We specialise in:</p>
+        <ul>
+          <li><strong>Engines</strong> (engine only or with gearbox)</li>
+          <li><strong>Gearboxes</strong></li>
+          <li><strong>Nose cuts</strong> and <strong>half cuts</strong></li>
+          <li><strong>Body parts</strong></li>
+          <li><strong>Service kits</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Do the parts come with a warranty?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>Warranty terms vary by part type. Please confirm warranty details with us at the time of ordering. We stand behind the quality of our parts and will work with you to resolve any issues.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT -->
+  <div class="faq-category">
+    <div class="faq-category-title">Payment</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What payment methods do you accept?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>We accept <strong>bank transfers and mobile payments</strong>. Payment details will be provided when you confirm your order. We require full or partial payment upfront before processing your order.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Is a deposit required?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        <p>Yes — for most orders we require a <strong>deposit before processing</strong>. The deposit amount varies by order value. The balance is paid before or upon delivery. Full details are confirmed at the time of order.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<div class="faq-cta">
+  <h2>STILL HAVE <span>QUESTIONS?</span></h2>
+  <p>Our team is ready to help — reach out via WhatsApp or email and we'll get back to you quickly.</p>
+  <a href="https://wa.me/971525075778?text=Hi%20BK%20Autospares%2C%20I%20have%20a%20question%20about%20your%20parts." target="_blank" class="btn-primary">💬 WhatsApp Us</a>
+  <a href="mailto:bkautospares124@gmail.com" class="btn-outline">📧 Send Email</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">BK<span>AUTO</span>SPARES</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#products">Price List</a></li>
+      <li><a href="faq.html">FAQs</a></li>
+      <li><a href="testimonials.html">Testimonials</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 BK Autospares. All Rights Reserved.</div>
+  </div>
+</footer>
+
+<script>
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+</body>
+</html>
