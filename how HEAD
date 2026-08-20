@@ -1,0 +1,12 @@
+[33mcommit 6765bbd9a338193920da506531526cb8e661d08e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Tinotenda <just.tino@icloud.com>
+Date:   Thu Aug 20 19:08:41 2026 +0200
+
+    commit
+
+ faq.html          | 424 [32m++++++++++++++++++++++++++++++++++++++++++++++++++++++[m
+ images/engine.png | Bin [31m0[m -> [32m1301915[m bytes
+ images/wheel.png  | Bin [31m0[m -> [32m620955[m bytes
+ index.html        | 115 [32m++++++++++++++[m[31m-[m
+ testimonials.html | 194 [32m+++++++++++++++++++++++++[m
+ 5 files changed, 731 insertions(+), 2 deletions(-)
